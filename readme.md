@@ -31,18 +31,49 @@ Crie os arquivos:
     <title>ReactJs</title>
   </head>
   <body>
-    <h1>Hello Word!!</h1>
+    <div id="app"></div>
+
     <script src="./bundle.js"></script>
   </body>
 </html>
 ```
 
-- **src/index.js**
+- **src/App.js**
 
 ```
-const soma = (a, b) => a + b;
+import React from "react";
+import Charts_Google from './components/Charts/Charts_Google/Charts_Google';
+import Area_Chart from './components/Charts/Area_Chart/Area_Chart';
+import Bar_Chart_H from './components/Charts/Bar_Chart_H/Bar_Chart_H';
+import Bar_Chart_V from './components/Charts/Bar_Chart_V/Bar_Chart_V';
+import Table_Chart from './components/Charts/Table_Chart/Table_Chart';
+import GeoCharts from './components/Charts/Maps/GeoCharts/GeoCharts';
+import SimpleMap from './components/Charts/Maps/SimpleMap/SimpleMap';
+import "./App.css";
+import unesp from "./assets/Unesp.jpg";
 
-alert(soma(1, 3));
+
+
+function App() {
+  return (
+    //fragment
+    <>
+      <h1>Introdução ReactJs</h1>
+      <img width={100} src={unesp} />;
+      <Charts_Google/>
+      <Area_Chart/>
+      <Bar_Chart_H/>
+      <Bar_Chart_V/>
+      <Table_Chart/>
+      <GeoCharts/>
+      <SimpleMap/>
+      
+      
+    </>
+  );
+}
+
+export default App;
 ```
 
 - **babel.config.js**
@@ -75,6 +106,16 @@ module.exports = {
         use: {
           loader: "babel-loader"
         }
+      },
+      {
+        test: /\.css$/,
+        use: [{ loader: "style-loader" }, { loader: "css-loader" }]
+      },
+      {
+        test: /.*\.(gif|png|jpe?g)$/i,
+        use: {
+          loader: "file-loader"
+        }
       }
     ]
   }
@@ -84,10 +125,36 @@ module.exports = {
 Adcione ao **package.json**
 
 ```
-"scripts": {
+{
+  "name": "react-introducao",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/core": "^7.5.5",
+    "@babel/plugin-proposal-class-properties": "^7.5.5",
+    "@babel/preset-env": "^7.5.5",
+    "@babel/preset-react": "^7.0.0",
+    "babel-loader": "^8.0.6",
+    "css-loader": "^3.1.0",
+    "file-loader": "^4.1.0",
+    "style-loader": "^0.23.1",
+    "webpack": "^4.38.0",
+    "webpack-cli": "^3.3.6",
+    "webpack-dev-server": "^3.7.2"
+  },
+  "dependencies": {
+    "google-map-react": "^1.1.7",
+    "prop-types": "^15.7.2",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "react-google-charts": "^3.0.15"
+  },
+  "scripts": {
     "build": "webpack --mode production",
     "dev": "webpack-dev-server --mode development"
   }
+}
 ```
 
 > Execute yarn dev e veja o projeto funcionando
@@ -163,100 +230,4 @@ body {
 }
 ```
 
-Inclua no **src/App.js**
 
-```
-import "./App.css";
-```
-
-## Importando imagens
-
-Execute o comando
-
-```
-yarn add file-loader -D
-```
-
-Adcione uma nova rule ao **webpack.config.js**
-
-```
-      {
-        test: /.*\.(gif|png|jpe?g)$/i,
-        use: {
-          loader: "file-loader"
-        }
-      }
-```
-
-Crie uma pasta **src/assets** e coloque um aquivo lá.
-
-Faça a importação da imagem no arquivo **src/App.js**
-
-> Exemplo
-
-```
-import React from "react";
-import "./App.css";
-
-import profile from "./assets/profile.jpeg";
-
-function App() {
-  return <img width={100} src={profile} />;
-}
-
-export default App;
-
-```
-
-## Class Components
-
-Execute o comando
-
-```
-yarn add @babel/plugin-proposal-class-properties -D
-```
-
-Inclua no arquivo **babel.config.js**
-
-```
-plugins: ["@babel/plugin-proposal-class-properties"]
-```
-
-Crie o arquivo **components/TechList.js**
-
-```
-import React, { Component } from "react";
-
-class TechList extends Component {
-  state = {
-    techs: ["Node Js", "React Js", "React Native"]
-  };
-
-  render() {
-    return (
-      <ul>
-        {this.state.techs.map(tech => (
-          <li>{tech}</li>
-        ))}
-      </ul>
-    );
-  }
-}
-
-export default TechList;
-
-```
-
-Faça a importação do _component_ no arquivo **src/App.js**
-
-```
-import TechList from "./components/TechList";
-
-<TechList />
-```
-
-## Debugando React com DevTools
-
-Instale a Extensão do Chrome **React Developer Tools**
-
-https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi?hl=pt-BR
